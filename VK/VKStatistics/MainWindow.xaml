@@ -26,6 +26,6 @@
                 <MenuItem x:Name="exitMenuBtn" Header="Выход" Click="Exit_Click"/>
             </MenuItem>
         </Menu>
-        
+
     </Grid>
 </Window>
