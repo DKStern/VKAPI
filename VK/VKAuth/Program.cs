@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VkNet;
 using VkNet.Enums.Filters;
 using VkNet.Model;
@@ -25,28 +21,35 @@ namespace VKAuth
             Console.Write("Введите пароль: ");
             password = Console.ReadLine();
 
-            if (!string.IsNullOrEmpty(login) && !string.IsNullOrEmpty(password))
+            try
             {
-
-                api.Authorize(new ApiAuthParams
+                if (!string.IsNullOrEmpty(login) && !string.IsNullOrEmpty(password))
                 {
-                    ApplicationId = AppId,
-                    Login = login,
-                    Password = password,
-                    Settings = Settings.All,
-                    TwoFactorAuthorization = () =>
+                    api.Authorize(new ApiAuthParams
                     {
-                        Console.Write("Введите код: ");
-                        return Console.ReadLine();
-                    }
-                });
+                        ApplicationId = AppId,
+                        Login = login,
+                        Password = password,
+                        Settings = Settings.All,
+                        TwoFactorAuthorization = () =>
+                        {
+                            Console.Write("Введите код: ");
+                            return Console.ReadLine();
+                        }
+                    });
 
-                Console.WriteLine(api.Token);
-                using (var sw = new StreamWriter("AccesToken.txt", false))
-                {
-                    sw.WriteLine(api.Token);
+                    Console.WriteLine(api.Token);
+                    using (var sw = new StreamWriter("AccesToken.txt", false))
+                    {
+                        sw.WriteLine(api.Token);
+                    }
+
+                    Console.ReadKey();
                 }
-                Console.ReadKey();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine($@"Во время авторизации возникла ошибка: {e.Message}");
             }
         }
     }
